@@ -19,13 +19,8 @@ public class Phone {
     }
 
     public void sendSms() {
-        if (phoneContract.getSmsLimit() > 0) {
-            System.out.println("SMS wysłany");
-            phoneContract.setSmsLimit(phoneContract.getSmsLimit() - 1);
-            smsSent++;
-        } else if (phoneContract.getBalance() - phoneContract.getSmsCost() > 0) {
-            System.out.println("SMS wysłany");
-            phoneContract.setBalance(phoneContract.getBalance() - phoneContract.getSmsCost());
+        if (phoneContract.sendSms()) {
+            System.out.println("Wysłano SMS");
             smsSent++;
         } else {
             System.out.println("Nie udało się wysłać SMS");
@@ -33,42 +28,19 @@ public class Phone {
     }
 
     public void call(int seconds) {
-        int callDuration = 0;
-        if (phoneContract.getCallLimit() >= seconds) {
-            callDuration += seconds;
-            callSeconds += callDuration;
-            phoneContract.setCallLimit(phoneContract.getCallLimit() - seconds);
-            System.out.println("Rozmowa trwała " + seconds + " sekund");
-        } else if (seconds > phoneContract.getCallLimit()) {
-            callDuration += phoneContract.getCallLimit();
-            callSeconds += callDuration;
-            phoneContract.setCallLimit(0);
-        }
+        int callDuration = phoneContract.call(seconds);
 
-        if (phoneContract.getBalance() >= (phoneContract.getCallCost() / 60) * seconds && phoneContract.getCallLimit() == 0) {
-            callDuration += seconds;
-            callSeconds += callDuration;
-            phoneContract.setBalance(phoneContract.getBalance() - (phoneContract.getCallCost() / 60) * seconds);
-            System.out.println("Rozmowa trwała " + callDuration + " sekund");
-        } else if (phoneContract.getBalance() < (phoneContract.getCallCost() / 60) * seconds) {
-            double interruptedCall = (60 * phoneContract.getBalance()) / phoneContract.getCallCost();
-            callDuration += interruptedCall;
-            phoneContract.setBalance(phoneContract.getBalance() - (phoneContract.getCallCost() / 60) * interruptedCall);
+        if (callDuration > 0) {
             System.out.println("Rozmowa trwała " + callDuration + " sekund");
             callSeconds += callDuration;
         } else {
-            System.out.println("Nie udało się wykonać połączenia");
+            System.out.println("Nie udało się nawiązać połączenia");
         }
     }
 
     public void sendMms() {
-        if (phoneContract.getMmsLimit() > 0) {
-            System.out.println("MMS wysłany");
-            phoneContract.setMmsLimit(phoneContract.getMmsLimit() - 1);
-            mmsSent++;
-        } else if (phoneContract.getBalance() - phoneContract.getMmsCost() > 0) {
-            System.out.println("MMS wysłany");
-            phoneContract.setBalance(phoneContract.getBalance() - phoneContract.getMmsCost());
+        if (phoneContract.sendMms()) {
+            System.out.println("Wysłano MMS");
             mmsSent++;
         } else {
             System.out.println("Nie udało się wysłać MMS");

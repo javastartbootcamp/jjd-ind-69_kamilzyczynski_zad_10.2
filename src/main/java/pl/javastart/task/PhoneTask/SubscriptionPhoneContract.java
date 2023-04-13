@@ -16,58 +16,18 @@ public class SubscriptionPhoneContract extends PhoneContract {
     }
 
     @Override
-    public double getBalance() {
-        return Double.MAX_VALUE;
+    public boolean sendSms() {
+        return true;
     }
 
     @Override
-    void setBalance(double balance) {
-
+    public boolean sendMms() {
+        return true;
     }
 
     @Override
-    public double getSmsCost() {
-        return 0;
-    }
-
-    @Override
-    public double getMmsCost() {
-        return 0;
-    }
-
-    @Override
-    public double getCallCost() {
-        return 0;
-    }
-
-    @Override
-    public int getSmsLimit() {
-        return 0;
-    }
-
-    @Override
-    void setSmsLimit(int smsLimit) {
-
-    }
-
-    @Override
-    public int getMmsLimit() {
-        return 0;
-    }
-
-    @Override
-    void setMmsLimit(int mmsLimit) {
-
-    }
-
-    @Override
-    public int getCallLimit() {
-        return 0;
-    }
-
-    @Override
-    void setCallLimit(int callLimit) {
-
+    public int call(int seconds) {
+        return seconds;
     }
 
     @Override

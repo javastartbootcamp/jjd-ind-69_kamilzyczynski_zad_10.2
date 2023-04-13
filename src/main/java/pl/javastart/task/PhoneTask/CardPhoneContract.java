@@ -13,6 +13,40 @@ public class CardPhoneContract extends PhoneContract {
         this.callCost = callCost;
     }
 
+    @Override
+    public boolean sendSms() {
+        if (balance - smsCost >= 0) {
+            balance -= smsCost;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean sendMms() {
+        if (balance - mmsCost >= 0) {
+            balance -= mmsCost;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int call(int seconds) {
+        if (balance >= (callCost / 60) * seconds) {
+            balance = balance - (callCost / 60) * seconds;
+            return seconds;
+        } else if (balance < (callCost / 60) * seconds) {
+            double interruptedCall = (60 * balance) / callCost;
+            balance = balance - (callCost / 60) * interruptedCall;
+            return (int) interruptedCall;
+        } else {
+            return 0;
+        }
+    }
+
     public double getBalance() {
         return balance;
     }
@@ -39,36 +73,6 @@ public class CardPhoneContract extends PhoneContract {
 
     public double getCallCost() {
         return callCost;
-    }
-
-    @Override
-    public int getSmsLimit() {
-        return 0;
-    }
-
-    @Override
-    void setSmsLimit(int smsLimit) {
-
-    }
-
-    @Override
-    public int getMmsLimit() {
-        return 0;
-    }
-
-    @Override
-    void setMmsLimit(int mmsLimit) {
-
-    }
-
-    @Override
-    public int getCallLimit() {
-        return 0;
-    }
-
-    @Override
-    void setCallLimit(int callLimit) {
-
     }
 
     void setCallCost(double callCost) {
