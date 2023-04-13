@@ -18,7 +18,6 @@ public class Phone {
         this.phoneContract = phoneContract;
     }
 
-
     public void sendSms() {
         if (phoneContract.getSmsLimit() > 0) {
             System.out.println("SMS wysłany");

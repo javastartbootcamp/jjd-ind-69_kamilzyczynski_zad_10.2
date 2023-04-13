@@ -10,9 +10,6 @@ public class Main {
 
         phone.printAccountState();
 
-
-        phone.printAccountState();
-
         phone.sendSms();
         phone.printAccountState();
     }

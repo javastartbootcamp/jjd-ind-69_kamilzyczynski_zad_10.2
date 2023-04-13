@@ -1,6 +1,5 @@
 package pl.javastart.task.PhoneTask;
 
-
 public class SubscriptionPhoneContract extends PhoneContract {
     private double subscriptionCost;
 
