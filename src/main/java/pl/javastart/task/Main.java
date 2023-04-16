@@ -1,16 +1,17 @@
 package pl.javastart.task;
 
-import pl.javastart.task.PhoneTask.CardPhoneContract;
-import pl.javastart.task.PhoneTask.Phone;
+import pl.javastart.task.phonetask.CardPhoneContract;
+import pl.javastart.task.phonetask.MixPhoneContract;
+import pl.javastart.task.phonetask.Phone;
 
 public class Main {
 
     public static void main(String[] args) {
-        Phone phone = new Phone(new CardPhoneContract(0.25, .1, .2, 0.5));
+        Phone phone = new Phone(new MixPhoneContract(0.25, .1, .2, 0.5, 1, 1, 1));
 
         phone.printAccountState();
-
-        phone.call(60);
+        phone.sendSms();
+        phone.call(90);
         phone.printAccountState();
     }
 }

@@ -1,4 +1,4 @@
-package pl.javastart.task.PhoneTask;
+package pl.javastart.task.phonetask;
 
 public class Phone {
     private int callSeconds;

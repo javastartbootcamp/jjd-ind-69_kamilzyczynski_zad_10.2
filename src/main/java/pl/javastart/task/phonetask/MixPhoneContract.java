@@ -1,11 +1,11 @@
-package pl.javastart.task.PhoneTask;
+package pl.javastart.task.phonetask;
 
 public class MixPhoneContract extends CardPhoneContract {
     private int smsLimit;
     private int mmsLimit;
-    private int callLimit;
+    private double callLimit;
 
-    public MixPhoneContract(double balance, double smsCost, double mmsCost, double callCost, int smsLimit, int mmsLimit, int callLimit) {
+    public MixPhoneContract(double balance, double smsCost, double mmsCost, double callCost, int smsLimit, int mmsLimit, double callLimit) {
         super(balance, smsCost, mmsCost, callCost);
         this.smsLimit = smsLimit;
         this.mmsLimit = mmsLimit;
@@ -28,11 +28,11 @@ public class MixPhoneContract extends CardPhoneContract {
         this.mmsLimit = mmsLimit;
     }
 
-    public int getCallLimit() {
+    public double getCallLimit() {
         return callLimit;
     }
 
-    void setCallLimit(int callLimit) {
+    void setCallLimit(double callLimit) {
         this.callLimit = callLimit;
     }
 
@@ -41,12 +41,8 @@ public class MixPhoneContract extends CardPhoneContract {
         if (smsLimit > 0) {
             smsLimit--;
             return true;
-        } else if (getBalance() - getSmsCost() >= 0) {
-            setBalance(getBalance() - getSmsCost());
-            return true;
-        } else {
-            return false;
         }
+        return super.sendSms();
     }
 
     @Override
@@ -54,32 +50,23 @@ public class MixPhoneContract extends CardPhoneContract {
         if (mmsLimit > 0) {
             mmsLimit--;
             return true;
-        } else if (getBalance() - getMmsCost() >= 0) {
-            setBalance(getBalance() - getMmsCost());
-            return true;
-        } else {
-            return false;
         }
+        return super.sendMms();
     }
 
     @Override
     public int call(int seconds) {
         int callDuration = 0;
-        if ((callLimit / 60.0) >= seconds) {
+        if ((callLimit * 60.0) >= seconds) {
             callDuration += seconds;
-            callLimit -= seconds * 60.0;
-        } else if (seconds > callDuration / 60.0) {
-            callDuration += callLimit / 60.0;
+            callLimit -= seconds / 60.0;
+        } else if (seconds > callLimit * 60.0) {
+            callDuration += callLimit * 60.0;
             callLimit = 0;
         }
 
-        if (getBalance() >= (getCallCost() / 60.0) * seconds && callLimit == 0) {
-            callDuration += seconds;
-            setBalance(getBalance() - (getCallCost() / 60) * seconds);
-        } else if (getBalance() < (getCallCost() / 60.0) * seconds) {
-            double interruptedCall = (60.0 * getBalance()) / getCallCost();
-            callDuration += interruptedCall;
-            setBalance(getBalance() - (getCallCost() / 60.0) * interruptedCall);
+        if (callLimit == 0 && seconds > callDuration) {
+            callDuration += super.call(seconds - callDuration);
         }
         return callDuration;
     }

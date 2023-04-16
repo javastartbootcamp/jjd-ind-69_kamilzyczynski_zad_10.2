@@ -1,4 +1,4 @@
-package pl.javastart.task.PhoneTask;
+package pl.javastart.task.phonetask;
 
 public class SubscriptionPhoneContract extends PhoneContract {
     private double subscriptionCost;

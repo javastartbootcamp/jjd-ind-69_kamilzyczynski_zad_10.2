@@ -1,4 +1,4 @@
-package pl.javastart.task.PhoneTask;
+package pl.javastart.task.phonetask;
 
 public class CardPhoneContract extends PhoneContract {
     private double balance;
@@ -35,15 +35,14 @@ public class CardPhoneContract extends PhoneContract {
 
     @Override
     public int call(int seconds) {
-        if (balance >= (callCost / 60) * seconds) {
-            balance = balance - (callCost / 60) * seconds;
+        double totalCost = (callCost / 60.0) * seconds;
+        if (balance >= totalCost) {
+            balance = balance - totalCost;
             return seconds;
-        } else if (balance < (callCost / 60) * seconds) {
+        } else {
             double interruptedCall = (60 * balance) / callCost;
             balance = balance - (callCost / 60) * interruptedCall;
             return (int) interruptedCall;
-        } else {
-            return 0;
         }
     }
 
